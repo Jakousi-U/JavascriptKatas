@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Promedio</title>
+<link rel="stylesheet" type="text/css" href="mystyle.css">
+</head>
+<body>
+	<div id="promedio">
+		<h1>PROMEDIO: 0</h1>
+	</div>
+	<div id="formulario">
+		<table class="style01">
+			<tr>
+				<td class="left">Valor</td>
+				<td class="right"><input id="valor" type="number" name="val"
+					min="0" max="10" step="1" value="7"></td>
+			</tr>
+			<tr>
+				<td class="left"><input id="limpiar" type="button"
+					value="Limpiar" onclick="clean();" /></td>
+				<td class="right"><input id="calcular" type="button"
+					value="Calcular" onclick="calc();" /></td>
+			</tr>
+		</table>
+	</div>
+	<div id="mensaje" class="error"></div>
+	<div id="valores"></div>
+
+	<script>
+		var suma = 0;
+		var elementos = 0;
+		function clean() {
+			document.getElementById("promedio").innerHTML = "<h1>PROMEDIO: 0</h1>";
+			document.getElementById("valores").innerHTML = "";
+			document.getElementById("mensaje").innerHTML = "";
+			suma = 0;
+			elementos = 0;
+		}
+
+		function calc() {
+			document.getElementById("mensaje").innerHTML = "";
+			var valor = document.getElementById("valor").value;
+			if (valor == null || valor === "" || isNaN(Number(valor))) {
+				document.getElementById("mensaje").innerHTML = "Valor inválido";
+			} else {
+				elementos += 1;
+				suma += Number(valor);
+				var texto = "<h1>PROMEDIO: #</h1>"
+				texto = texto.replace("#", suma / elementos)
+				document.getElementById("promedio").innerHTML = texto;
+				document.getElementById("valores").innerHTML += " ";
+				document.getElementById("valores").innerHTML += valor;
+				document.getElementById("valores").innerHTML += " ";
+			}
+		}
+	</script>
+</body>
+</html>
