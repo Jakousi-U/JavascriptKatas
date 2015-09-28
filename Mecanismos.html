@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Mecanismos Mentales</title>
+<link rel="stylesheet" type="text/css" href="mystyle.css">
+</head>
+<body>
+
+	<div id="texto" class="mainText">
+		<h1>Mecanismos Mentales</h1>
+		<p>Los mecanismos mentales con los que una persona es negligente
+			con sus emociones son:
+		<ul>
+			<li><b>Represión:</b> Consiste en reprimir las emociones y no
+				permitir a los demás conocer nuestro verdadero sentir. <i>Ejemplo:</i>
+				Estoy enojado por el canal de televisión que ven en casa pero no les
+				hago saber mi malestar y sólo me encierro en mi cuarto.</li>
+			<li><b>Expresión:</b> Cuando manifestamos continuamente lo que
+				creemos es nuestro sentir, mas buscando una respuesta que realmente
+				tratar de comunicar algo. <i>Ejemplo:</i> Postear continuamente en
+				mi red social lo solo, triste y poco éxitoso que soy.</li>
+			<li><b>Escape:</b> Simplemente abrumarse con algún estímulo y no
+				permitirse sentir las emociones. <i>Ejemplo:</i> Oir mucha música,
+				pasar horas viendo vídeos divertidos y leer libros recreativos.</li>
+		</ul>
+		Mi interpretación del libro <cite>El arte de desaprender</cite>.
+		</p>
+	</div>
+	<p>
+		Introduce tus porcentajes de estos mecanismos y aprieta el botón <i>Graficar</i>
+	</p>
+
+	<table class="style01">
+		<tr>
+			<td class="left">Represíon</td>
+			<td class="right"><input id="represion" type="number" name="r"
+				min="0" max="100" step="1" value="50"></td>
+		<tr>
+			<td class="left">Expresión</td>
+			<td class="right"><input id="expresion" type="number" name="r"
+				min="0" max="100" step="1" value="50"></td>
+		<tr>
+			<td class="left">Escape</td>
+			<td class="right"><input id="escape" type="number" name="r"
+				min="0" max="100" step="1" value="50"></td>
+		<tr>
+			<td colspan="2""><input id="Graficar" type="button"
+				value="Graficar" onclick="graficar();" /></td>
+		</tr>
+	</table>
+	<script>
+		
+	</script>
+
+	<svg class="area" id="area">
+	<text x="30" y="40" fill="black">Represión</text>
+	<text x="300" y="40" fill="black">Expresión</text>
+	<text x="180" y="360" fill="black">Escape</text>
+	<line x1="200" y1="200" x2="60" y2="50"
+			style="stroke:rgb(0,0,0);stroke-width:2" />
+	<line x1="200" y1="200" x2="340" y2="50"
+			style="stroke:rgb(0,0,0);stroke-width:2" />
+	<line x1="200" y1="200" x2="200" y2="350"
+			style="stroke:black;stroke-width:2" />
+	<script>
+		var svgNS = "http://www.w3.org/2000/svg";
+		var area = document.getElementById("area");
+		var its = 10;
+		var margH = 70;
+		var margV = 60;
+		var centerH = 200;
+		var centerV = 200;
+		var difH = centerH - margH;
+		var difV = centerV - margV;
+		var stepH = difH / its;
+		var stepV = difV / its;
+		for (i = 0; i < its; i++) {
+			var pathX = "M x1 y1 l x2 y2 l x3 y3 Z";
+			var innerPath = document.createElementNS(svgNS, "path");
+			innerPath.setAttributeNS(null, "id", "innerpath".concat(i));
+			pathX = pathX.replace("x1", margH + i * stepH);
+			pathX = pathX.replace("y1", margV + i * stepV);
+			pathX = pathX.replace("x2", 2 * (difH - i * stepH));
+			pathX = pathX.replace("y2", 0);
+			pathX = pathX.replace("x3", -difH + i * stepH);
+			pathX = pathX.replace("y3", stepV * 2 * (its - i));
+			//console.log(pathX);
+			innerPath.setAttributeNS(null, "d", pathX);
+			innerPath.setAttributeNS(null, "fill", "none");
+			innerPath.setAttributeNS(null, "stroke", "black");
+			innerPath.setAttributeNS(null, "stroke-width", "0.1");
+
+			area.appendChild(innerPath);
+		}
+
+		function graficar() {
+			try {
+				document.getElementById("mecanismos").remove();
+			} catch (err) {
+				console.log("No removido. Elemento: mecanismos");
+			}
+
+			var r = document.getElementById("represion").value;
+			var x = document.getElementById("expresion").value;
+			var s = document.getElementById("escape").value;
+			var r2h = (100 - r) * difH / 100 + margH;
+			var r2v = margV + (100 - r) * difV / 100;
+			var x2h = x * difH / 100 + centerH - r2h;
+			var x2v = centerV - r2v - x * difV / 100;
+			var s2h = - x * difH / 100;
+			var s2v = x * difV / 100 +  s * difV / 100;
+			var pathX = "M x1 y1 l x2 y2 l x3 y3 Z";
+			pathX = pathX.replace("x1", r2h);
+			pathX = pathX.replace("y1", r2v);
+			pathX = pathX.replace("x2", x2h);
+			pathX = pathX.replace("y2", x2v);
+			pathX = pathX.replace("x3", s2h);
+			pathX = pathX.replace("y3", s2v);
+			var innerPath = document.createElementNS(svgNS, "path");
+			innerPath.setAttributeNS(null, "id", "mecanismos");
+			//console.log(pathX);
+			innerPath.setAttributeNS(null, "d", pathX);
+			innerPath.setAttributeNS(null, "fill", "orange");
+			innerPath.setAttributeNS(null, "fill-opacity", "0.5");
+			innerPath.setAttributeNS(null, "stroke", "red");
+			innerPath.setAttributeNS(null, "stroke-width", "2");
+
+			area.appendChild(innerPath);
+		}
+	</script>
+	</svg>
+
+
+</body>
+</html>
